@@ -7,11 +7,14 @@
 
 import Foundation
 import UIKit
+import RxSwift
 
 class TaskListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var prioritySegmentedControl: UISegmentedControl!
     @IBOutlet weak var tableView: UITableView!
+    
+    let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,5 +33,17 @@ class TaskListViewController: UIViewController, UITableViewDelegate, UITableView
         // 테이블뷰 셀을 만드는 메서드
         let cell = tableView.dequeueReusableCell(withIdentifier: "TaskTableViewCell", for: indexPath)
         return cell
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let navC = segue.destination as? UINavigationController,
+              let addTaskVC = navC.viewControllers.first as? AddTaskViewController else {
+            fatalError("Controller not found")
+        }
+        
+        addTaskVC.taskSubjectObservable
+            .subscribe(onNext: { task in
+                print(task)
+            }).disposed(by: disposeBag)
     }
 }
