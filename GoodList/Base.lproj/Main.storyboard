@@ -19,7 +19,7 @@
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Wvn-Tq-eIf">
                                 <rect key="frame" x="59" y="117" width="275" height="32"/>
                                 <segments>
-                                    <segment title="First"/>
+                                    <segment title="All"/>
                                     <segment title="High"/>
                                     <segment title="Medium"/>
                                     <segment title="Low"/>
