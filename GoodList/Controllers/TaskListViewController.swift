@@ -8,13 +8,14 @@
 import Foundation
 import UIKit
 import RxSwift
+import RxCocoa
 
 class TaskListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var prioritySegmentedControl: UISegmentedControl!
     @IBOutlet weak var tableView: UITableView!
     
-    private var tasks = Variable<[Task]>([])
+    private var tasks = BehaviorRelay<[Task]>(value: [])
     
     let disposeBag = DisposeBag()
     
@@ -45,7 +46,13 @@ class TaskListViewController: UIViewController, UITableViewDelegate, UITableView
         
         addTaskVC.taskSubjectObservable
             .subscribe(onNext: { task in
-                self.tasks.value.append(task)
+                
+                let priority = Priority(rawValue: self.prioritySegmentedControl.selectedSegmentIndex - 1)
+                
+                var existingTasks = self.tasks.value
+                existingTasks.append(task)
+                self.tasks.accept(existingTasks)
+                
             }).disposed(by: disposeBag)
     }
 }
